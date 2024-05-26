@@ -9,6 +9,10 @@ base {
 
 version = "$project.version+${libs.versions.minecraft.get()}"
 group = project.maven_group
+minecraft_version=project.minecraft_version
+voicechat_api_version=project.voicechat_api_version
+whisper_jni_version=project.whisper_jni_version
+
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.
@@ -16,6 +20,13 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+
+	mavenCentral()
+	maven { url = 'https://maven.maxhenkel.de/repository/public' }
+	maven {
+		name = "TarsosDSP repository"
+		url = "https://mvn.0110.be/releases"
+	}
 }
 
 loom {
@@ -49,14 +60,21 @@ dependencies {
 	// QSL is not a complete API; You will need Quilted Fabric API to fill in the gaps.
 	// Quilted Fabric API will automatically pull in the correct QSL version.
 	modImplementation libs.quilted.fabric.api
-	// modImplementation libs.bundles.quilted.fabric.api // If you wish to use Fabric API's deprecated modules, you can replace the above line with this one
+
+	// Mod Dependencies
+	implementation "de.maxhenkel.voicechat:voicechat-api:${voicechat_api_version}"
+
+	//Third Party Java Library
+	implementation "io.github.givimad:whisper-jni:${whisper_jni_version}"
+	implementation 'be.tarsos.dsp:core:2.5'
+	implementation 'be.tarsos.dsp:jvm:2.5'
 }
 
 processResources {
-	inputs.properties 'version': version, 'group': project.group
+	inputs.properties 'version': version, 'group': project.group, 'minecraft_version': project.minecraft_version, 'voicechat_api_version': project.voicechat_api_version, 'whisper_jni_version': project.whisper_jni_version
 
 	filesMatching('quilt.mod.json') {
-		expand 'version': version, 'group': project.group
+		expand 'version': version, 'group': project.group, 'minecraft_version': project.minecraft_version, 'voicechat_api_version':project.voicechat_api_version, 'whisper_jni_version': project.whisper_jni_version
 	}
 }
 

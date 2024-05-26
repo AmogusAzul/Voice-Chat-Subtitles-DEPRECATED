@@ -16,7 +16,8 @@
         },
         "intermediate_mappings": "net.fabricmc:intermediary",
         "entrypoints": {
-            "init": "io.github.amogusazul.voice_chat_subtitles.VoiceChatSubtitles"
+            "init": "io.github.amogusazul.voice_chat_subtitles.VoiceChatSubtitles",
+						"voicechat": "io.github.amogusazul.voice_chat_subtitles.VoiceChatSubtitlesPlugin"
         },
         "depends": [
             {
@@ -29,8 +30,12 @@
             },
             {
                 "id": "minecraft",
-                "versions": ">=1.19"
-            }
+                "versions": ">=${minecraft_version}"
+            },
+						{
+							"id": "voicechat",
+							"versions": ">=${minecraft_version}-${voicechat_api_version}"
+						}
         ]
     },
     "mixin": "voice_chat_subtitles.mixins.json"
